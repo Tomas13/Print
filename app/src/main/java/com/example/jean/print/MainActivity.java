@@ -1,12 +1,15 @@
 package com.example.jean.print;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
@@ -34,10 +37,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
+PrintHelper photoPrinter = new PrintHelper(this);
+        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.droids);
+
+        photoPrinter.printBitmap("droids.jpg - test print", bitmap);
+
+
 //        doWebViewPrint();
 
         new RetrieveFeedTask().execute();
-        shit();
+//        shit();
     }
 
     class RetrieveFeedTask extends AsyncTask<String, Void, Void> {
@@ -65,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void shit() {
         try {
-            Socket sock = new Socket("192.168.0.100", 9100);
+            Socket sock = new Socket("10.62.10.151", 6101);
             PrintWriter oStream = new PrintWriter(sock.getOutputStream());
             oStream.println("HI,test from Android Device");
             oStream.println("\n\n\n");
